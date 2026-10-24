@@ -1,0 +1,2 @@
+ALTER TABLE public.settings ADD COLUMN hero_image_path text, ADD COLUMN hero_alt text;
+UPDATE public.settings SET address = '1, Sri Kamatchi St, Padmavathi Nagar, Iyyappanthangal, Tamil Nadu 600077, India' WHERE id = 1 AND address IS NULL;

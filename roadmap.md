@@ -1,0 +1,5 @@
+- [x] Stack floating Maps above WhatsApp and use configured address for floating directions; verified desktop/mobile scrolling.
+- [x] Add owner-only credential settings with current-password verification and profile details; rule tests pass and signed-out access redirects.
+- [ ] Initial owner account and authenticated end-to-end verification await private account creation in Cloud Users (no owner account exists). Public signup remains disabled; no pasted password was saved.
+- [x] Improve safe Admin Login failure feedback; four rule tests pass and browser checks cover real rejected sign-in plus simulated throttling/service failures.
+- [x] Add isolated development-only dashboard demo; browser verified entry, all tabs, temporary product creation/reset and exit with no private requests; production gate tests pass. Uses password-free demo entry, not embedded credentials.- [x] Turn sections into equal-card grids with View All pages (/shop/section, /offers); admin product list gets an All filter and product pages get Ask on WhatsApp; PDF used as layout reference only, no style changes. All 22 tests pass and pages verified in browser.

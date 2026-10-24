@@ -1,0 +1,10 @@
+create table public.profiles (id uuid primary key references auth.users(id) on delete cascade, display_name text not null default '', updated_at timestamptz not null default now());
+grant select, update on public.profiles to authenticated;
+grant all on public.profiles to service_role;
+alter table public.profiles enable row level security;
+create policy "owner profile read" on public.profiles for select to authenticated using (id = auth.uid());
+create policy "owner profile update" on public.profiles for update to authenticated using (id = auth.uid()) with check (id = auth.uid());
+create or replace function public.create_user_profile() returns trigger language plpgsql security definer set search_path=public as $$ begin insert into public.profiles(id) values(new.id) on conflict do nothing; return new; end $$;
+create trigger on_auth_user_created_profile after insert on auth.users for each row execute function public.create_user_profile();
+insert into public.profiles(id) select id from auth.users on conflict do nothing;
+create or replace function public.assign_owner_admin() returns trigger language plpgsql security definer set search_path=public as $$ begin if lower(new.email) = 'lalithadeals@lalitha.local' and not exists(select 1 from public.user_roles where role='admin') then insert into public.user_roles(user_id,role) values(new.id,'admin') on conflict do nothing; end if; return new; end $$;
