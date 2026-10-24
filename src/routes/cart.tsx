@@ -64,7 +64,7 @@ function CartPage() {
         <aside className="h-fit rounded-2xl border border-border bg-ivory p-6 shadow-soft">
           {q ? <QuoteTotals q={q} /> : <p className="text-sm text-muted-foreground">Calculating…</p>}
           {q?.errors.map((e) => <p key={e} className="mt-3 text-sm text-destructive">{e}</p>)}
-          <Button asChild className="mt-6 w-full" size="lg" disabled={!q || q.errors.length > 0}>
+          <Button asChild variant="candy" className="mt-6 w-full font-bold shadow-soft" size="lg" disabled={!q || q.errors.length > 0}>
             {q && q.errors.length === 0 ? <Link to="/checkout">Checkout</Link> : <span>Checkout</span>}
           </Button>
         </aside>

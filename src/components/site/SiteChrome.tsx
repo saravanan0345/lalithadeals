@@ -19,22 +19,28 @@ function useMapsLink() {
 export function SiteHeader() {
   const { count } = useCart();
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:h-20">
-        <Link to="/" aria-label="Lalitha / L Deals home"><Logo className="h-10 sm:h-12" /></Link>
-        <nav aria-label="Main" className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/90 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-3 sm:px-4 sm:h-20">
+        <Link to="/" aria-label="Lalitha / L Deals home"><Logo className="h-9 sm:h-12" /></Link>
+        <nav aria-label="Main" className="hidden items-center gap-7 text-sm font-bold text-muted-foreground md:flex">
           <a href="/#offers" className="hover:text-foreground">Offers</a>
           <a href="/#costumes" className="hover:text-foreground">Costumes</a>
           <a href="/#frames" className="hover:text-foreground">Photo Frames</a>
           <a href="/#gifts" className="hover:text-foreground">Gifts</a>
           <a href="/#contact" className="hover:text-foreground">Contact</a>
         </nav>
-        <Link to="/cart" className="relative inline-flex h-10 items-center gap-2 rounded-full border border-border bg-card px-4 text-sm shadow-soft hover:bg-muted" aria-label={`Cart, ${count} items`}>
+        <Link to="/cart" className="relative inline-flex h-9 sm:h-10 items-center gap-2 rounded-full border border-border bg-card px-3 sm:px-4 text-xs sm:text-sm font-bold shadow-soft hover:bg-muted" aria-label={`Cart, ${count} items`}>
           <ShoppingBag className="h-4 w-4" />
           <span className="hidden sm:inline">Cart</span>
           {count > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1.5 text-xs font-semibold text-primary-foreground">{count}</span>}
         </Link>
       </div>
+      <nav aria-label="Mobile Sections" className="flex items-center gap-2 overflow-x-auto no-scrollbar px-3 py-2 border-t border-border/40 md:hidden text-xs">
+        <a href="/#offers" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Special Offers</a>
+        <a href="/#costumes" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Costumes</a>
+        <a href="/#frames" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Photo Frames</a>
+        <a href="/#gifts" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Gifts</a>
+      </nav>
     </header>
   );
 }
@@ -67,14 +73,14 @@ export function WhatsAppFab() {
   return (
     <>
     <a href={maps} target="_blank" rel="noreferrer" aria-label="Get Directions" title="Get Directions"
-      className="fixed bottom-[5.5rem] right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full border border-border bg-lavender text-accent-foreground shadow-lift transition-transform hover:scale-105 sm:bottom-[6.25rem] sm:right-8"
+      className="fixed bottom-[4.75rem] right-4 z-50 inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-lavender text-accent-foreground shadow-lift transition-transform hover:scale-105 sm:bottom-[6.25rem] sm:right-8 sm:h-14 sm:w-14"
       style={{ marginBottom: "env(safe-area-inset-bottom)" }}>
-      <MapPin className="h-6 w-6" />
+      <MapPin className="h-5 w-5 sm:h-6 sm:w-6" />
     </a>
     <a href={waLink(WA_GREETING)} target="_blank" rel="noreferrer" aria-label="Chat with us on WhatsApp"
-      className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-whatsapp text-whatsapp-foreground shadow-lift transition-transform hover:scale-105 sm:bottom-8 sm:right-8"
+      className="fixed bottom-4 right-4 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full bg-whatsapp text-whatsapp-foreground shadow-lift transition-transform hover:scale-105 sm:bottom-8 sm:right-8 sm:h-14 sm:w-14"
       style={{ marginBottom: "env(safe-area-inset-bottom)" }}>
-      <MessageCircle className="h-6 w-6" />
+      <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" />
     </a>
     </>
   );

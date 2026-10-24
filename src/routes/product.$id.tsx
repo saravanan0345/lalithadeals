@@ -60,12 +60,14 @@ function ProductPage() {
           {p.section === "costumes" && data.settings?.deposit_info && <div><dt className="font-medium">Deposit</dt><dd className="whitespace-pre-line text-muted-foreground">{data.settings.deposit_info}</dd></div>}
           {p.customization && <div><dt className="font-medium">Customisation</dt><dd className="whitespace-pre-line text-muted-foreground">{p.customization}</dd></div>}
         </dl>
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <label className="text-sm" htmlFor="qty">Qty</label>
-          <input id="qty" type="number" min={1} max={MAX_QTY} value={qty} onChange={(e) => setQty(Math.max(1, Math.min(MAX_QTY, Number(e.target.value) || 1)))}
-            className="h-10 w-20 rounded-full border border-input bg-card px-4 text-center" />
-          <Button size="lg" disabled={!available} onClick={() => { add(p.id, qty); toast.success("Added to cart"); }}>Add to Cart</Button>
-          <Button asChild size="lg" variant="whatsapp"><a href={waLink(askText)} target="_blank" rel="noreferrer">Ask on WhatsApp</a></Button>
+        <div className="mt-8 flex flex-wrap items-center gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-semibold" htmlFor="qty">Qty</label>
+            <input id="qty" type="number" min={1} max={MAX_QTY} value={qty} onChange={(e) => setQty(Math.max(1, Math.min(MAX_QTY, Number(e.target.value) || 1)))}
+              className="h-10 w-16 rounded-full border border-input bg-card px-3 text-center font-bold" />
+          </div>
+          <Button size="lg" variant="candy" className="flex-1 min-w-[130px] rounded-full font-bold" disabled={!available} onClick={() => { add(p.id, qty); toast.success("Added to cart"); }}>Add to Cart</Button>
+          <Button asChild size="lg" variant="whatsapp" className="w-full sm:w-auto rounded-full font-bold"><a href={waLink(askText)} target="_blank" rel="noreferrer">Ask on WhatsApp</a></Button>
         </div>
       </div>
     </div>
