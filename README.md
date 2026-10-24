@@ -21,6 +21,13 @@ npm i
 npm run dev
 ```
 
+## Deploy to Vercel
+
+Import `saravanan0345/lalithadeals` into Vercel. Pushes to `main` deploy automatically.
+Add the Supabase URL and publishable key as `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`,
+`VITE_SUPABASE_URL`, and `VITE_SUPABASE_PUBLISHABLE_KEY` in the Vercel project environment
+variables. Set `SUPABASE_SERVICE_ROLE_KEY` for order submission and admin operations.
+
 ## Built with
 
 - TanStack Start
