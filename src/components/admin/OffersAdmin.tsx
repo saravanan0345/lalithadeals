@@ -44,8 +44,10 @@ export function OffersAdmin() {
   };
 
   return (
-    <div className="mt-4">
-      <div className="flex justify-end"><Button size="sm" onClick={() => setEdit(blank)}>Add offer</Button></div>
+    <div className="mt-4 space-y-4">
+      <div className="flex justify-end">
+        <Button variant="candy" onClick={() => setEdit(blank)}>+ Add offer</Button>
+      </div>
       <div className="mt-4 divide-y divide-border rounded-2xl border border-border bg-card">
         {offers.length === 0 && <p className="p-6 text-sm text-muted-foreground">No offers yet.</p>}
         {offers.map((o) => (

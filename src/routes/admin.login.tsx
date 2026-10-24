@@ -76,7 +76,7 @@ function Login() {
         <div className="space-y-1.5"><Label htmlFor="u">Username</Label><Input id="u" value={username} onChange={(e) => { setUsername(e.target.value); setErr(""); }} autoComplete="username" disabled={busy} aria-describedby={err ? "login-error" : undefined} required /></div>
         <div className="space-y-1.5"><Label htmlFor="p">Password</Label><Input id="p" type="password" value={password} onChange={(e) => { setPassword(e.target.value); setErr(""); }} autoComplete="current-password" disabled={busy} aria-describedby={err ? "login-error" : undefined} required /></div>
         {err && <p id="login-error" className="text-sm text-destructive" role="alert">{err}</p>}
-        <Button type="submit" className="w-full" disabled={busy}>{busy ? "Signing in…" : "Sign in"}</Button>
+        <Button type="submit" variant="candy" className="w-full text-base font-bold shadow-pop" disabled={busy}>{busy ? "Signing in…" : "Sign in"}</Button>
       </form>
     </div>
   );

@@ -70,7 +70,7 @@ export function CategoriesAdmin() {
         <select value={section} onChange={(e) => setSection(e.target.value as Section)} className="h-9 rounded-md border border-input bg-card px-3 text-sm" aria-label="Section">
           {(Object.keys(SECTION_LABEL) as Section[]).map((s) => <option key={s} value={s}>{SECTION_LABEL[s]}</option>)}
         </select>
-        <Button size="sm" onClick={add}>Add category</Button>
+        <Button variant="candy" onClick={add}>+ Add category</Button>
       </div>
       {(Object.keys(SECTION_LABEL) as Section[]).map((s) => (
         <div key={s}>

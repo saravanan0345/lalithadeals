@@ -1,23 +1,154 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Upload, Image as ImageIcon, X, Check } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { Upload, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { imageUrl } from "@/lib/shop";
+import { uploadImage, deleteImage } from "@/lib/admin";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import type { Database } from "@/integrations/supabase/types";
 
 export type AdminRow<T extends keyof Database["public"]["Tables"]> = Database["public"]["Tables"][T]["Row"];
 
-const FALLBACK_CATEGORIES: AdminRow<"categories">[] = [
-  { id: "c1", name: "Superhero-inspired", section: "costumes", sort_order: 1, created_at: new Date().toISOString() },
-  { id: "c2", name: "Police & Uniforms", section: "costumes", sort_order: 2, created_at: new Date().toISOString() },
-  { id: "c3", name: "Freedom Fighters & Historical", section: "costumes", sort_order: 3, created_at: new Date().toISOString() },
-  { id: "c4", name: "Mythological & Devotional", section: "costumes", sort_order: 4, created_at: new Date().toISOString() },
-  { id: "c5", name: "Fancy Dress & Events", section: "costumes", sort_order: 5, created_at: new Date().toISOString() },
-  { id: "c6", name: "Blazers", section: "costumes", sort_order: 6, created_at: new Date().toISOString() },
-  { id: "c7", name: "Custom Photo Frames", section: "frames", sort_order: 1, created_at: new Date().toISOString() },
-  { id: "c8", name: "Gifts", section: "gifts", sort_order: 1, created_at: new Date().toISOString() },
+export const FALLBACK_CATEGORIES: AdminRow<"categories">[] = [
+  { id: "c1", name: "Superhero-inspired", section: "costumes", sort_order: 1, created_at: "2026-01-01T00:00:00Z" },
+  { id: "c2", name: "Police & Uniforms", section: "costumes", sort_order: 2, created_at: "2026-01-01T00:00:00Z" },
+  { id: "c3", name: "Freedom Fighters & Historical", section: "costumes", sort_order: 3, created_at: "2026-01-01T00:00:00Z" },
+  { id: "c4", name: "Mythological & Devotional", section: "costumes", sort_order: 4, created_at: "2026-01-01T00:00:00Z" },
+  { id: "c5", name: "Fancy Dress & Events", section: "costumes", sort_order: 5, created_at: "2026-01-01T00:00:00Z" },
+  { id: "c6", name: "Blazers", section: "costumes", sort_order: 6, created_at: "2026-01-01T00:00:00Z" },
+  { id: "c7", name: "Custom Photo Frames", section: "frames", sort_order: 1, created_at: "2026-01-01T00:00:00Z" },
+  { id: "c8", name: "Gifts", section: "gifts", sort_order: 1, created_at: "2026-01-01T00:00:00Z" },
+];
+
+export const FALLBACK_PRODUCTS: AdminRow<"products">[] = [
+  {
+    id: "p1",
+    name: "Kids Police Officer Uniform Set",
+    section: "costumes",
+    category_id: "c2",
+    description: "Complete khaki police costume with shirt, pants, belt, badge, whistle and cap. Ideal for school annual days and fancy dress competitions.",
+    price: 499,
+    mrp: 1200,
+    age_info: "4 – 10 years",
+    size_info: "Chest 26–32 in",
+    is_available: true,
+    stock: 5,
+    rental_terms: "Rental duration: 24–48 hours. Please return in neat condition.",
+    customization: null,
+    image_path: null,
+    sort_order: 1,
+    created_at: "2026-01-01T00:00:00Z",
+  },
+  {
+    id: "p2",
+    name: "Superhero Spidey Suit Costume",
+    section: "costumes",
+    category_id: "c1",
+    description: "Full body superhero jumpsuit with separate matching mask. Breathable fabric and vibrant print for kids parties and fancy dress.",
+    price: 599,
+    mrp: 1499,
+    age_info: "3 – 12 years",
+    size_info: "Height 100–140 cm",
+    is_available: true,
+    stock: 4,
+    rental_terms: "Rental duration: 24–48 hours.",
+    customization: null,
+    image_path: null,
+    sort_order: 2,
+    created_at: "2026-01-01T00:00:00Z",
+  },
+  {
+    id: "p3",
+    name: "Little Krishna Devotional Costume",
+    section: "costumes",
+    category_id: "c4",
+    description: "Traditional yellow dhoti, kurta, mukut with peacock feather, bansuri (flute), and pearl necklace. Perfect for Gokulashtami and cultural events.",
+    price: 449,
+    mrp: 999,
+    age_info: "2 – 8 years",
+    size_info: "Chest 22–28 in",
+    is_available: true,
+    stock: 6,
+    rental_terms: "Rental duration: 24–48 hours.",
+    customization: null,
+    image_path: null,
+    sort_order: 3,
+    created_at: "2026-01-01T00:00:00Z",
+  },
+  {
+    id: "p4",
+    name: "Personalised Wooden Photo Frame (8x10)",
+    section: "frames",
+    category_id: "c7",
+    description: "Premium handcrafted wooden frame with high-resolution photo print and gloss lamination.",
+    price: 450,
+    mrp: 699,
+    age_info: null,
+    size_info: "8 x 10 inches",
+    is_available: true,
+    stock: 15,
+    rental_terms: null,
+    customization: "Send your high-res photo via WhatsApp after placing the order.",
+    image_path: null,
+    sort_order: 1,
+    created_at: "2026-01-01T00:00:00Z",
+  },
+  {
+    id: "p5",
+    name: "Custom Acrylic LED Night Lamp Frame",
+    section: "frames",
+    category_id: "c7",
+    description: "Warm glow LED engraved acrylic keepsake frame with wooden stand. Ideal gift for birthdays and anniversaries.",
+    price: 799,
+    mrp: 1299,
+    age_info: null,
+    size_info: "6 x 8 inches",
+    is_available: true,
+    stock: 8,
+    rental_terms: null,
+    customization: "Share custom names, date, and couple/baby photo via WhatsApp.",
+    image_path: null,
+    sort_order: 2,
+    created_at: "2026-01-01T00:00:00Z",
+  },
+  {
+    id: "p6",
+    name: "Personalised Magic Colour-Changing Mug",
+    section: "gifts",
+    category_id: "c8",
+    description: "Ceramic black mug that reveals your custom photo and message when hot beverage is poured.",
+    price: 349,
+    mrp: 599,
+    age_info: null,
+    size_info: "325 ml",
+    is_available: true,
+    stock: 20,
+    rental_terms: null,
+    customization: "Send photo and caption via WhatsApp.",
+    image_path: null,
+    sort_order: 1,
+    created_at: "2026-01-01T00:00:00Z",
+  },
+  {
+    id: "p7",
+    name: "Customised Name Keyring & Pen Combo Gift Box",
+    section: "gifts",
+    category_id: "c8",
+    description: "Luxury matte finish metal rollerball pen and faux-leather keyring laser engraved with your name. Comes in a presentation box.",
+    price: 299,
+    mrp: 499,
+    age_info: null,
+    size_info: "Standard Gift Box",
+    is_available: true,
+    stock: 12,
+    rental_terms: null,
+    customization: "Provide the name to engrave.",
+    image_path: null,
+    sort_order: 2,
+    created_at: "2026-01-01T00:00:00Z",
+  },
 ];
 
 export function getLocalCategories(): AdminRow<"categories">[] {
@@ -57,12 +188,12 @@ export function deleteCategoryLocally(id: string) {
 }
 
 export function getLocalProducts(): AdminRow<"products">[] {
-  if (typeof window === "undefined") return [];
+  if (typeof window === "undefined") return FALLBACK_PRODUCTS;
   try {
     const raw = localStorage.getItem("lalitha_local_products");
-    return raw ? JSON.parse(raw) : [];
+    return raw ? JSON.parse(raw) : FALLBACK_PRODUCTS;
   } catch {
-    return [];
+    return FALLBACK_PRODUCTS;
   }
 }
 
@@ -139,9 +270,12 @@ export function useAdminTable<T extends "products" | "categories" | "offers" | "
         if (table === "products") {
           const local = getLocalProducts();
           const remote = data ? (data as AdminRow<"products">[]) : [];
-          const remoteIds = new Set(remote.map((r) => r.id));
-          const merged = [...local.filter((l) => !remoteIds.has(l.id)), ...remote];
-          return merged as never as AdminRow<T>[];
+          if (remote.length > 0) {
+            const remoteIds = new Set(remote.map((r) => r.id));
+            const merged = [...local.filter((l) => !remoteIds.has(l.id)), ...remote];
+            return merged as never as AdminRow<T>[];
+          }
+          return local as never as AdminRow<T>[];
         }
 
         if (table === "offers") {
@@ -153,13 +287,13 @@ export function useAdminTable<T extends "products" | "categories" | "offers" | "
         }
 
         if (error) {
-          return (table === "categories" ? getLocalCategories() : []) as never as AdminRow<T>[];
+          return (table === "categories" ? getLocalCategories() : table === "products" ? getLocalProducts() : []) as never as AdminRow<T>[];
         }
         if (table === "categories" && (!data || data.length === 0)) {
           return getLocalCategories() as never as AdminRow<T>[];
         }
         return (data ?? []) as never as AdminRow<T>[];
-      } catch (e) {
+      } catch {
         if (table === "products") {
           return getLocalProducts() as never as AdminRow<T>[];
         }
@@ -187,76 +321,121 @@ export function F({ label, id, children, hint }: { label: string; id: string; ch
   );
 }
 
-export function ImagePicker({ current, file, onFile, onRemove }: { current: string | null; file: File | null; onFile: (f: File | null) => void; onRemove: () => void }) {
-  const [preview, setPreview] = useState<string | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+export function ImagePicker(props: {
+  value?: string | null;
+  onChange?: (url: string | null) => void;
+  current?: string | null;
+  file?: File | null;
+  onFile?: (f: File | null) => void;
+  onRemove?: () => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [localPreview, setLocalPreview] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!file) { setPreview(null); return; }
-    const u = URL.createObjectURL(file);
-    setPreview(u);
-    return () => URL.revokeObjectURL(u);
-  }, [file]);
-
-  const src = preview ?? imageUrl(current);
-
-  return (
-    <div className="space-y-2">
-      <Label className="text-sm font-medium">Product Image</Label>
-      <div className="flex flex-wrap items-center gap-4">
-        <div className="relative flex h-28 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-muted shadow-sm">
-          {src ? (
-            <img src={src} alt="Preview" className="h-full w-full object-contain" />
-          ) : (
-            <ImageIcon className="h-8 w-8 text-muted-foreground/40" />
-          )}
-        </div>
-        <div className="space-y-2.5">
-          <input
-            ref={inputRef}
-            type="file"
-            accept="image/png,image/jpeg,image/webp,image/gif"
-            onChange={(e) => onFile(e.target.files?.[0] ?? null)}
-            className="hidden"
-            aria-label="Upload product image"
-          />
+  if (props.onChange !== undefined) {
+    const val = props.value ?? null;
+    const src = imageUrl(val) || val;
+    return (
+      <div className="space-y-2">
+        <Label className="text-sm font-semibold">Image</Label>
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-border bg-muted shadow-sm">
+            {src ? (
+              <img src={src} alt="Preview" className="h-full w-full object-contain" />
+            ) : (
+              <span className="text-xs text-muted-foreground">No image</span>
+            )}
+          </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => inputRef.current?.click()}
-              className="flex items-center gap-2 border-primary/30 hover:border-primary hover:bg-primary/5"
-            >
-              <Upload className="h-4 w-4 text-primary" />
-              {file || current ? "Change Image" : "Add Image"}
-            </Button>
-            {(current || file) && (
+            <label className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-primary/30 bg-background px-4 py-2 text-sm font-bold text-primary shadow-soft hover:bg-primary/10 transition-colors">
+              <Upload className="h-4 w-4" /> {uploading ? "Uploading…" : val ? "Replace image" : "Upload image"}
+              <input
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                disabled={uploading}
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  setUploading(true);
+                  try {
+                    const path = await uploadImage(file, "products");
+                    props.onChange!(path);
+                    toast.success("Image added successfully");
+                  } catch (err) {
+                    toast.error((err as Error).message || "Upload failed");
+                  } finally {
+                    setUploading(false);
+                    e.target.value = "";
+                  }
+                }}
+              />
+            </label>
+            {val && (
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-                onClick={() => {
-                  if (inputRef.current) inputRef.current.value = "";
-                  onFile(null);
-                  onRemove();
+                onClick={async () => {
+                  await deleteImage(val);
+                  props.onChange!(null);
+                  toast.success("Image removed");
                 }}
+                className="text-destructive hover:bg-destructive/10 hover:text-destructive"
               >
-                <X className="mr-1 h-3.5 w-3.5" />
-                Remove
+                <Trash2 className="mr-1 h-4 w-4" /> Remove
               </Button>
             )}
           </div>
-          {file ? (
-            <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Check className="h-3.5 w-3.5 text-green-600" />
-              <span className="font-medium text-foreground">{file.name}</span>
-            </p>
+        </div>
+      </div>
+    );
+  }
+
+  const displaySrc = props.file ? localPreview : imageUrl(props.current);
+  return (
+    <div className="space-y-2">
+      <Label className="text-sm font-semibold">Image</Label>
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-border bg-muted shadow-sm">
+          {displaySrc ? (
+            <img src={displaySrc} alt="Preview" className="h-full w-full object-contain" />
           ) : (
-            <p className="text-xs text-muted-foreground">
-              {current ? "Current image displayed." : "No image selected. Click \"Add Image\" to select a photo."}
-            </p>
+            <span className="text-xs text-muted-foreground">No image</span>
+          )}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <label className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-primary/30 bg-background px-4 py-2 text-sm font-bold text-primary shadow-soft hover:bg-primary/10 transition-colors">
+            <Upload className="h-4 w-4" /> {props.file || props.current ? "Change image" : "Add image"}
+            <input
+              type="file"
+              accept="image/*"
+              className="sr-only"
+              onChange={(e) => {
+                const f = e.target.files?.[0] ?? null;
+                if (f) {
+                  setLocalPreview(URL.createObjectURL(f));
+                } else {
+                  setLocalPreview(null);
+                }
+                props.onFile?.(f);
+              }}
+            />
+          </label>
+          {(props.current || props.file) && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setLocalPreview(null);
+                props.onFile?.(null);
+                props.onRemove?.();
+              }}
+              className="text-destructive hover:bg-destructive/10"
+            >
+              <Trash2 className="mr-1 h-4 w-4" /> Remove
+            </Button>
           )}
         </div>
       </div>

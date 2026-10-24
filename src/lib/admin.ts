@@ -28,6 +28,45 @@ export function useAdminStatus() {
   return state;
 }
 
+async function fileToCompressedDataUrl(file: File): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("Failed to read image file"));
+    reader.onload = () => {
+      const raw = reader.result as string;
+      if (typeof document === "undefined") return resolve(raw);
+      const img = new Image();
+      img.onerror = () => resolve(raw);
+      img.onload = () => {
+        try {
+          const maxDim = 800;
+          let { width, height } = img;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) return resolve(raw);
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL("image/jpeg", 0.82));
+        } catch {
+          resolve(raw);
+        }
+      };
+      img.src = raw;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 export async function uploadImage(file: File, folder: "products" | "offers" | "hero"): Promise<string> {
   const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace("jpeg", "jpg");
   if (!["jpg", "png", "webp", "gif"].includes(ext)) throw new Error("Please upload a JPG, PNG, WEBP or GIF image.");
@@ -40,14 +79,9 @@ export async function uploadImage(file: File, folder: "products" | "offers" | "h
     console.warn("Supabase storage upload notice (falling back to Data URL):", err);
   }
 
-  // Fallback: convert file to Base64 Data URL so that adding products works immediately
-  // even when the remote storage bucket is not yet provisioned.
-  return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = () => reject(new Error("Failed to read image file"));
-    reader.readAsDataURL(file);
-  });
+  // Fallback: convert file to compressed Base64 Data URL so that adding products works immediately
+  // without relying on remote storage bucket availability.
+  return fileToCompressedDataUrl(file);
 }
 
 export async function deleteImage(path: string | null | undefined) {
