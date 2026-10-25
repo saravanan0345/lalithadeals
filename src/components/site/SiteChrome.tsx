@@ -38,7 +38,7 @@ export function SiteHeader() {
         </Link>
       </div>
       <nav aria-label="Mobile Sections" className="flex items-center gap-2 overflow-x-auto no-scrollbar px-3 py-2 border-t border-border/40 md:hidden text-xs">
-        <a href="/#offers" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Special Offers</a>
+        <a href="/#offers" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Special Deals</a>
         <a href="/#costumes" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Fancy Costumes</a>
         <a href="/#frames" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Photo Frames</a>
         <a href="/#gifts" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Gifts</a>

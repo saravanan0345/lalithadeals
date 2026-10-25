@@ -157,7 +157,7 @@ export function Section({
 export function OffersSection({ data, viewAll = false }: { data: Catalog; viewAll?: boolean }) {
   return (
     <section id="offers" className="scroll-mt-24 py-10 sm:py-16">
-      <SectionHead title="Special Offers" intro="Combos, bundles and seasonal savings." />
+      <SectionHead title="Special Deals" intro="Combos, bundles and seasonal savings." />
       {data.offers.length === 0 ? (
         <Empty text="New offers are coming soon. Message us on WhatsApp for current deals." />
       ) : (

@@ -83,7 +83,7 @@ function Admin() {
             value="offers"
             className="rounded-full px-5 py-2 text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-soft"
           >
-            Special Offers
+            Special Deals
           </TabsTrigger>
           <TabsTrigger
             value="categories"

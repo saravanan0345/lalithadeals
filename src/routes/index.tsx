@@ -10,9 +10,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Lalitha / L Deals — Costume Rentals, Photo Frames & Gifts" },
-      { name: "description", content: "Rent costumes for kids and events, order custom photo frames and gifts, and see our latest special offers." },
+      { name: "description", content: "Rent costumes for kids and events, order custom photo frames and gifts, and see our latest special deals." },
       { property: "og:title", content: "Lalitha / L Deals — Costume Rentals, Photo Frames & Gifts" },
-      { property: "og:description", content: "Costume rentals, custom photo frames and gifts with special offers." },
+      { property: "og:description", content: "Costume rentals, custom photo frames and gifts with special deals." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

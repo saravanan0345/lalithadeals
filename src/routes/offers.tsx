@@ -6,9 +6,9 @@ import { catalogQuery } from "@/lib/queries";
 export const Route = createFileRoute("/offers")({
   head: () => ({
     meta: [
-      { title: "Special Offers — Lalitha / L Deals" },
+      { title: "Special Deals — Lalitha / L Deals" },
       { name: "description", content: "Combos, bundles and seasonal savings at Lalitha / L Deals." },
-      { property: "og:title", content: "Special Offers — Lalitha / L Deals" },
+      { property: "og:title", content: "Special Deals — Lalitha / L Deals" },
       { property: "og:description", content: "Combos, bundles and seasonal savings at Lalitha / L Deals." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
