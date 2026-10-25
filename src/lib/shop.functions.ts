@@ -5,13 +5,9 @@ import type { Database } from "@/integrations/supabase/types";
 import { quoteCart, MAX_QTY, type PricingOffer, type PricingProduct } from "./pricing";
 
 export const DEFAULT_CATEGORIES = [
-  { id: "11111111-1111-4111-a111-111111111111", name: "Superhero-inspired", section: "costumes" as const, sort_order: 1, created_at: "2026-01-01T00:00:00Z" },
-  { id: "22222222-2222-4222-a222-222222222222", name: "Police & Uniforms", section: "costumes" as const, sort_order: 2, created_at: "2026-01-01T00:00:00Z" },
-  { id: "33333333-3333-4333-a333-333333333333", name: "Freedom Fighters & Historical", section: "costumes" as const, sort_order: 3, created_at: "2026-01-01T00:00:00Z" },
-  { id: "44444444-4444-4444-a444-444444444444", name: "Mythological & Devotional", section: "costumes" as const, sort_order: 4, created_at: "2026-01-01T00:00:00Z" },
-  { id: "55555555-5555-4555-a555-555555555555", name: "Fancy Dress & Events", section: "costumes" as const, sort_order: 5, created_at: "2026-01-01T00:00:00Z" },
-  { id: "66666666-6666-4666-a666-666666666666", name: "Blazers", section: "costumes" as const, sort_order: 6, created_at: "2026-01-01T00:00:00Z" },
-  { id: "77777777-7777-4777-a777-777777777777", name: "Custom Photo Frames", section: "frames" as const, sort_order: 1, created_at: "2026-01-01T00:00:00Z" },
+  { id: "11111111-1111-4111-a111-111111111111", name: "Fancy Costumes below 15 years old", section: "costumes" as const, sort_order: 1, created_at: "2026-01-01T00:00:00Z" },
+  { id: "66666666-6666-4666-a666-666666666666", name: "Blazer below 25 years old", section: "costumes" as const, sort_order: 2, created_at: "2026-01-01T00:00:00Z" },
+  { id: "77777777-7777-4777-a777-777777777777", name: "Photo Frames", section: "frames" as const, sort_order: 1, created_at: "2026-01-01T00:00:00Z" },
   { id: "88888888-8888-4888-a888-888888888888", name: "Gifts", section: "gifts" as const, sort_order: 1, created_at: "2026-01-01T00:00:00Z" },
 ];
 
@@ -20,7 +16,7 @@ export const DEFAULT_PRODUCTS = [
     id: "a1010101-1010-4010-a010-101010101010",
     name: "Kids Police Officer Uniform Set",
     section: "costumes" as const,
-    category_id: "22222222-2222-4222-a222-222222222222",
+    category_id: "11111111-1111-4111-a111-111111111111",
     description: "Complete khaki police costume with shirt, pants, belt, badge, whistle and cap. Ideal for school annual days and fancy dress competitions.",
     price: "499.00",
     mrp: "1200.00",
@@ -56,7 +52,7 @@ export const DEFAULT_PRODUCTS = [
     id: "a3030303-3030-4030-a030-303030303030",
     name: "Little Krishna Devotional Costume",
     section: "costumes" as const,
-    category_id: "44444444-4444-4444-a444-444444444444",
+    category_id: "11111111-1111-4111-a111-111111111111",
     description: "Traditional yellow dhoti, kurta, mukut with peacock feather, bansuri (flute), and pearl necklace. Perfect for Gokulashtami and cultural events.",
     price: "549.00",
     mrp: "1350.00",
@@ -74,7 +70,7 @@ export const DEFAULT_PRODUCTS = [
     id: "a4040404-4040-4040-a040-404040404040",
     name: "Netaji Subhash Chandra Bose Historical Dress",
     section: "costumes" as const,
-    category_id: "33333333-3333-4333-a333-333333333333",
+    category_id: "11111111-1111-4111-a111-111111111111",
     description: "Military style INA freedom fighter costume with jacket, trousers, cap, cross belt and round spectacles for Independence Day or Republic Day.",
     price: "499.00",
     mrp: "1100.00",
@@ -237,15 +233,15 @@ export const DEFAULT_OFFERS = [
 
 export const DEFAULT_SETTINGS = {
   id: 1,
-  address: "1, Sri Kamatchi St, Padmavathi Nagar, Iyyappanthangal, Tamil Nadu 600077, India",
+  address: "3/237, Sri Kamatchi street, Padmavati Nagar, Iyyappanthangal near oil mill road",
   maps_link: "https://maps.app.goo.gl/JE4r246QNFvA5oed6",
-  about: "Lalitha / L Deals offers costume rentals for school events and fancy dress competitions, handcrafted custom photo frames, and personalized gifts for all celebrations.",
-  rental_terms: "Costumes available for rent up to 24-48 hours. Clean return expected. Refundable deposit collected at pickup.",
+  about: "Lalitha / L Deals offers fancy costume rentals for school events and competitions, handcrafted custom photo frames, and personalized gifts for all celebrations.",
+  rental_terms: "Fancy costumes available for rent up to 24-48 hours. Clean return expected. Refundable deposit collected at pickup.",
   deposit_info: "Standard refundable security deposit applicable upon collection.",
   delivery_info: "Store pickup available at Iyyappanthangal, Chennai. Courier / delivery available on request.",
   frame_instructions: "Send high-resolution photos via WhatsApp for best frame printing quality. We share digital previews before crafting.",
   hero_image_path: null,
-  hero_alt: "Costumes, custom photo frames and thoughtful gifts at Lalitha / L Deals",
+  hero_alt: "Fancy costumes, custom photo frames and thoughtful gifts at Lalitha / L Deals",
   updated_at: "2026-01-01T00:00:00Z",
 };
 

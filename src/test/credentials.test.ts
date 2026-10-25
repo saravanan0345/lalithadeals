@@ -45,7 +45,7 @@ describe("Owner credential rules", () => {
 describe("Contact requirements", () => {
   it("opens directions to the configured address", () => {
     const url = new URL(mapsLink(DEFAULT_ADDRESS));
-    expect(url.searchParams.get("destination")).toBe("1, Sri Kamatchi St, Padmavathi Nagar, Iyyappanthangal, Tamil Nadu 600077, India");
+    expect(url.searchParams.get("destination")).toBe("3/237, Sri Kamatchi street, Padmavati Nagar, Iyyappanthangal near oil mill road");
   });
   it("preserves the WhatsApp number", () => {
     expect(SHOP.waNumber).toBe("918072044100");

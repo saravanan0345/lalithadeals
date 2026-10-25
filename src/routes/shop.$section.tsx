@@ -35,9 +35,9 @@ function ShopSectionPage() {
   const { data } = useSuspenseQuery(catalogQuery);
   const tint = section === "costumes" ? "bg-blush/40" : section === "frames" ? "bg-lavender/50" : "bg-sage/50";
   const intro = section === "costumes"
-    ? "Rental costumes for children 15 and under, plus blazers up to age 25."
+    ? "Rental costumes for children below 15 years old, plus blazers below 25 years old."
     : section === "frames"
-      ? data.settings?.frame_instructions || "Personalised frames made for your favourite moments."
+      ? data.settings?.frame_instructions || "Personalised photo frames made for your favourite moments."
       : "Thoughtful gifts for every occasion.";
   return (
     <>

@@ -21,10 +21,12 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-3 sm:px-4 sm:h-20">
-        <Link to="/" aria-label="Lalitha / L Deals home"><Logo className="h-9 sm:h-12" /></Link>
+        <Link to="/" aria-label="Lalitha Deals home" className="group">
+          <Logo />
+        </Link>
         <nav aria-label="Main" className="hidden items-center gap-7 text-sm font-bold text-muted-foreground md:flex">
           <a href="/#offers" className="hover:text-foreground">Offers</a>
-          <a href="/#costumes" className="hover:text-foreground">Costumes</a>
+          <a href="/#costumes" className="hover:text-foreground">Fancy Costumes</a>
           <a href="/#frames" className="hover:text-foreground">Photo Frames</a>
           <a href="/#gifts" className="hover:text-foreground">Gifts</a>
           <a href="/#contact" className="hover:text-foreground">Contact</a>
@@ -37,7 +39,7 @@ export function SiteHeader() {
       </div>
       <nav aria-label="Mobile Sections" className="flex items-center gap-2 overflow-x-auto no-scrollbar px-3 py-2 border-t border-border/40 md:hidden text-xs">
         <a href="/#offers" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Special Offers</a>
-        <a href="/#costumes" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Costumes</a>
+        <a href="/#costumes" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Fancy Costumes</a>
         <a href="/#frames" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Photo Frames</a>
         <a href="/#gifts" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Gifts</a>
       </nav>
@@ -51,7 +53,10 @@ export function SiteFooter() {
   return (
     <footer className="mt-24 border-t border-border bg-ivory">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:grid-cols-3">
-        <div><Logo className="h-14" /><p className="mt-4 text-sm text-muted-foreground">Costume rentals, custom photo frames and thoughtful gifts.</p></div>
+        <div>
+          <Logo className="mb-3" />
+          <p className="mt-2 text-sm text-muted-foreground">Rental fancy costumes, custom photo frames and thoughtful gifts.</p>
+        </div>
         <div className="text-sm">
           <h3 className="font-semibold">Shop hours</h3>
           <ul className="mt-3 space-y-1 text-muted-foreground">{SHOP.hours.map((h) => <li key={h}>{h}</li>)}</ul>

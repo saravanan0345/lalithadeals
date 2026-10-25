@@ -38,7 +38,7 @@ export function DemoDashboard() {
       <TabsContent value="orders"><p className="py-6 text-sm text-muted-foreground">No demo orders. Real orders are not connected.</p></TabsContent>
       <TabsContent value="business" className="max-w-xl space-y-4 py-4">
         <div className="space-y-2"><Label htmlFor="demo-shop">Shop name</Label><Input id="demo-shop" defaultValue="Lalitha / L Deals" /></div>
-        <div className="space-y-2"><Label htmlFor="demo-address">Address</Label><Input id="demo-address" defaultValue="1, Sri Kamatchi St, Padmavathi Nagar, Iyyappanthangal, Tamil Nadu 600077, India" /></div>
+        <div className="space-y-2"><Label htmlFor="demo-address">Address</Label><Input id="demo-address" defaultValue="3/237, Sri Kamatchi street, Padmavati Nagar, Iyyappanthangal near oil mill road" /></div>
         <Button onClick={() => setSaved(true)}>Save demo changes</Button>{saved && <p role="status" className="text-sm text-muted-foreground">Saved for this preview only.</p>}
       </TabsContent>
       <TabsContent value="account" className="max-w-xl space-y-4 py-4">

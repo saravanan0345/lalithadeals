@@ -27,11 +27,11 @@ function Home() {
     <>
       <Hero settings={data.settings} />
       <OffersSection data={data} viewAll />
-      <Section id="costumes" title="Costumes" tint="bg-blush/40" viewAll
-        intro="Rental costumes for children 15 and under, plus blazers up to age 25."
+      <Section id="costumes" title="Fancy Costumes" tint="bg-blush/40" viewAll
+        intro="Rental costumes for children below 15 years old, plus blazers below 25 years old."
         data={data} section="costumes" />
-      <Section id="frames" title="Custom Photo Frames" tint="bg-lavender/50" viewAll
-        intro={data.settings?.frame_instructions || "Personalised frames made for your favourite moments."}
+      <Section id="frames" title="Photo Frames" tint="bg-lavender/50" viewAll
+        intro={data.settings?.frame_instructions || "Personalised photo frames made for your favourite moments."}
         data={data} section="frames" />
       <Section id="gifts" title="Gifts" tint="bg-sage/50" viewAll intro="Thoughtful gifts for every occasion." data={data} section="gifts" />
       <About data={data} />
@@ -48,14 +48,14 @@ function Hero({ settings }: { settings: Catalog["settings"] }) {
         <div>
           <p className="text-xs sm:text-sm font-extrabold uppercase tracking-[0.2em] text-primary">Welcome to L Deals</p>
           <h1 className="mt-3 text-3xl font-extrabold leading-[1.15] sm:text-5xl sm:leading-tight">
-            Costumes, frames & gifts for every little celebration.
+            Fancy costumes, photo frames & gifts for every little celebration.
           </h1>
           <p className="mt-4 max-w-md text-sm sm:text-base text-muted-foreground">
-            Rent beautiful costumes for school events and fancy dress, order a custom photo frame, or pick a thoughtful gift — all in one place.
+            Rent beautiful fancy costumes for school events and competitions, order a custom photo frame, or pick a thoughtful gift — all in one place.
           </p>
           <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-3">
             <Button asChild size="lg" variant="candy" className="w-full sm:w-auto font-bold"><a href="#offers">View Offers</a></Button>
-            <Button asChild size="lg" variant="soft" className="w-full sm:w-auto font-bold"><a href="#costumes">Explore Costumes</a></Button>
+            <Button asChild size="lg" variant="soft" className="w-full sm:w-auto font-bold"><a href="#costumes">Explore Fancy Costumes</a></Button>
             <Button asChild size="lg" variant="whatsapp" className="w-full sm:w-auto font-bold"><a href={waLink(WA_GREETING)} target="_blank" rel="noreferrer">Chat on WhatsApp</a></Button>
           </div>
         </div>

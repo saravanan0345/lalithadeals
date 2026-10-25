@@ -39,10 +39,10 @@ export function SettingsAdmin() {
       }
       return {
         id: 1,
-        address: "1, Sri Kamatchi St, Padmavathi Nagar, Iyyappanthangal, Tamil Nadu 600077, India",
+        address: "3/237, Sri Kamatchi street, Padmavati Nagar, Iyyappanthangal near oil mill road",
         maps_link: "https://maps.app.goo.gl/JE4r246QNFvA5oed6",
-        about: "Costume rentals, custom photo frames and thoughtful gifts for every celebration.",
-        rental_terms: "Rental costumes for children 15 and under, plus blazers up to age 25.",
+        about: "Fancy costume rentals, custom photo frames and thoughtful gifts for every celebration.",
+        rental_terms: "Rental costumes for children below 15 years old, plus blazers below 25 years old.",
         deposit_info: "Standard security deposit required at pickup.",
         delivery_info: "Store pickup available at Iyyappanthangal. Home delivery available on request.",
         frame_instructions: "Personalised frames made for your favourite moments.",

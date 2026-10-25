@@ -255,7 +255,7 @@ INSERT INTO public.settings (
   hero_alt
 ) VALUES (
   1,
-  '1, Sri Kamatchi St, Padmavathi Nagar, Iyyappanthangal, Tamil Nadu 600077, India',
+  '3/237, Sri Kamatchi street, Padmavati Nagar, Iyyappanthangal near oil mill road',
   'https://maps.app.goo.gl/JE4r246QNFvA5oed6',
   'Costumes, photo frames and gifts for every little celebration.',
   'Costume rentals available for 24-48 hours. Please handle costumes with care.',

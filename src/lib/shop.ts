@@ -5,14 +5,14 @@ export const SHOP = {
   hours: ["11:00 AM – 1:00 PM", "5:00 PM – 9:30 PM"],
 };
 
-export const DEFAULT_ADDRESS = "1, Sri Kamatchi St, Padmavathi Nagar, Iyyappanthangal, Tamil Nadu 600077, India";
+export const DEFAULT_ADDRESS = "3/237, Sri Kamatchi street, Padmavati Nagar, Iyyappanthangal near oil mill road";
 export const mapsLink = (address: string) =>
   `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
 export const directionsLink = (
   s: { maps_link?: string | null; address?: string | null } | null | undefined,
 ) => (s?.maps_link && s.maps_link.trim()) || mapsLink(s?.address || DEFAULT_ADDRESS);
 
-export const SECTION_LABEL = { costumes: "Costumes", frames: "Custom Photo Frames", gifts: "Gifts" } as const;
+export const SECTION_LABEL = { costumes: "Fancy Costumes", frames: "Photo Frames", gifts: "Gifts" } as const;
 
 export function imageUrl(path: string | null | undefined): string | null {
   if (!path) return null;
@@ -27,7 +27,7 @@ export function waLink(text: string) {
 }
 
 export const WA_GREETING =
-  "Hi Lalitha / L Deals! I'm interested in your costumes, custom photo frames, gifts, and offers. Please share more details.";
+  "Hi Lalitha / L Deals! I'm interested in your fancy costumes, photo frames, gifts, and offers. Please share more details.";
 
 export const inr = (n: number) =>
   "₹" + n.toLocaleString("en-IN", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
