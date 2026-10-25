@@ -9,11 +9,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-soft hover:bg-primary/90 rounded-full font-bold",
-        candy: "bg-candy text-candy-foreground shadow-pop hover:brightness-105 active:scale-95 rounded-full font-bold",
-        gold: "bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 font-bold shadow-soft hover:brightness-105 rounded-full",
+        default: "bg-primary text-primary-foreground shadow-soft hover:bg-primary/85 rounded-full font-medium",
+        candy: "bg-primary text-primary-foreground shadow-soft hover:bg-primary/85 rounded-full font-medium",
+        gold: "bg-primary text-primary-foreground shadow-soft hover:bg-primary/85 rounded-full font-medium",
         soft: "bg-card text-foreground border border-border shadow-soft hover:bg-muted rounded-full font-medium",
-        whatsapp: "bg-whatsapp text-whatsapp-foreground shadow-soft hover:bg-whatsapp/85 rounded-full font-semibold",
+        whatsapp: "bg-whatsapp text-whatsapp-foreground shadow-soft hover:bg-whatsapp/85 rounded-full font-medium",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 rounded-full",
         outline:
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground rounded-full",
