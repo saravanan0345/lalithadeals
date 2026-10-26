@@ -13,6 +13,7 @@ describe("Reviews module", () => {
     expect(GOOGLE_BUSINESS_INFO.mapsUrl).toBe(GOOGLE_MAPS_LINK);
     expect(GOOGLE_MAPS_LINK).toContain("otX6cJUc3FDEkcMq5");
     expect(GOOGLE_BUSINESS_INFO.rating).toBe(4.9);
+    expect(GOOGLE_BUSINESS_INFO.totalReviews).toBe("200+");
     expect(GOOGLE_REVIEWS_DATA.length).toBeGreaterThan(0);
   });
 

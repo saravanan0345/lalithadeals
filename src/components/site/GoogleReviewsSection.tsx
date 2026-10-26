@@ -2,13 +2,6 @@ import { useState } from "react";
 import { Star, ExternalLink, MapPin, CheckCircle2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import {
   GOOGLE_BUSINESS_INFO,
   GOOGLE_MAPS_LINK,
   GOOGLE_REVIEWS_DATA,
@@ -16,7 +9,6 @@ import {
 } from "@/lib/reviews";
 
 export function GoogleReviewsSection() {
-  const [viewAllOpen, setViewAllOpen] = useState(false);
   const [showFloatingWidget, setShowFloatingWidget] = useState(true);
 
   // Double the reviews for seamless infinite left-to-right marquee
@@ -33,7 +25,7 @@ export function GoogleReviewsSection() {
               <span>Verified Google Reviews</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-              Loved by 150+ Customers & Parents
+              Loved by Over 200+ Customers & Parents
             </h2>
             <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
               Real reviews from our Google Maps profile for fancy costume rentals, personalized frames & gifts in Iyyappanthangal.
@@ -72,7 +64,7 @@ export function GoogleReviewsSection() {
                     ))}
                   </div>
                   <span className="text-xs sm:text-sm font-bold text-muted-foreground">
-                    ({GOOGLE_BUSINESS_INFO.totalReviews} Google Reviews)
+                    (Over 200+ Reviews on Google)
                   </span>
                 </div>
                 <p className="mt-1 text-xs sm:text-sm font-semibold text-foreground">
@@ -87,11 +79,14 @@ export function GoogleReviewsSection() {
 
             <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
               <Button
+                asChild
                 variant="candy"
                 className="w-full sm:w-auto font-bold rounded-full shadow-soft"
-                onClick={() => setViewAllOpen(true)}
               >
-                View All Reviews
+                <a href={GOOGLE_MAPS_LINK} target="_blank" rel="noopener noreferrer">
+                  <span>View All 200+ Reviews on Google Maps</span>
+                  <ExternalLink className="h-4 w-4 ml-1.5" />
+                </a>
               </Button>
               <Button
                 asChild
@@ -125,8 +120,10 @@ export function GoogleReviewsSection() {
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-soft">
               <GoogleGIcon className="h-5 w-5" />
             </div>
-            <button
-              onClick={() => setViewAllOpen(true)}
+            <a
+              href={GOOGLE_MAPS_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-left cursor-pointer select-none"
             >
               <div className="flex items-center gap-1.5 leading-none">
@@ -139,106 +136,14 @@ export function GoogleReviewsSection() {
                   ))}
                 </div>
               </div>
-              <p className="mt-0.5 text-[10px] sm:text-xs font-semibold text-muted-foreground">
-                150+ Reviews on Google Maps
+              <p className="mt-0.5 text-[10px] sm:text-xs font-semibold text-muted-foreground flex items-center gap-1">
+                <span>Over 200+ Reviews on Google Maps</span>
+                <ExternalLink className="h-2.5 w-2.5 opacity-60" />
               </p>
-            </button>
+            </a>
           </div>
         </aside>
       )}
-
-      {/* 'View All' Google Reviews Modal Dialog */}
-      <Dialog open={viewAllOpen} onOpenChange={setViewAllOpen}>
-        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl p-5 sm:p-7 bg-card">
-          <DialogHeader>
-            <div className="flex items-center gap-2 mb-1">
-              <GoogleGIcon className="h-6 w-6" />
-              <DialogTitle className="text-xl sm:text-2xl font-extrabold">
-                Google Reviews ({GOOGLE_BUSINESS_INFO.totalReviews})
-              </DialogTitle>
-            </div>
-            <DialogDescription className="text-xs sm:text-sm">
-              Verified customer feedback from Google Maps for {GOOGLE_BUSINESS_INFO.name}.
-            </DialogDescription>
-          </DialogHeader>
-
-          {/* Business Rating Summary Card */}
-          <div className="my-2 rounded-2xl border border-border bg-ivory p-4 flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-3xl font-extrabold text-foreground">4.9</span>
-                <div>
-                  <div className="flex text-amber-500">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <span className="text-xs font-semibold text-muted-foreground">
-                    Based on 150+ genuine ratings
-                  </span>
-                </div>
-              </div>
-            </div>
-            <Button asChild size="sm" variant="candy" className="rounded-full font-bold">
-              <a href={GOOGLE_MAPS_LINK} target="_blank" rel="noopener noreferrer">
-                <span>Rate Us on Google</span>
-                <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
-              </a>
-            </Button>
-          </div>
-
-          {/* List of all reviews */}
-          <div className="mt-2 space-y-3">
-            {GOOGLE_REVIEWS_DATA.map((rev) => (
-              <div
-                key={rev.id}
-                className="rounded-2xl border border-border bg-muted/30 p-4 transition-all hover:bg-muted/60"
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2.5">
-                    <div
-                      className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white ${rev.avatarColor}`}
-                    >
-                      {rev.author.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="text-xs sm:text-sm font-bold text-foreground">
-                        {rev.author}
-                      </p>
-                      <p className="text-[10px] text-muted-foreground">{rev.timeAgo}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <div className="flex text-amber-500">
-                      {[...Array(rev.rating)].map((_, i) => (
-                        <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                {rev.tag && (
-                  <span className="mt-2 inline-block rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
-                    {rev.tag}
-                  </span>
-                )}
-                <p className="mt-2 text-xs sm:text-sm text-foreground/90 leading-relaxed">
-                  "{rev.text}"
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-4 pt-3 border-t border-border flex justify-end">
-            <Button
-              variant="outline"
-              className="rounded-full text-xs font-bold"
-              onClick={() => setViewAllOpen(false)}
-            >
-              Close
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

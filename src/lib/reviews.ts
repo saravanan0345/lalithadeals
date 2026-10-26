@@ -16,7 +16,7 @@ export const GOOGLE_BUSINESS_INFO = {
   name: "Lalitha Fancy Costumes (LFC)",
   location: "Kamatchi street, Padmavathi Nagar, Iyyappanthangal, Chennai 600077",
   rating: 4.9,
-  totalReviews: "150+",
+  totalReviews: "200+",
   mapsUrl: GOOGLE_MAPS_LINK,
 };
 

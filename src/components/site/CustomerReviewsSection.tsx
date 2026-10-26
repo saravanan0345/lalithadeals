@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Star, MessageSquarePlus, CheckCircle2, HeartHandshake, ShieldCheck } from "lucide-react";
+import { Star, MessageSquarePlus, CheckCircle2, HeartHandshake, ShieldCheck, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,7 @@ export function CustomerReviewsSection() {
   const [reviews, setReviews] = useState<WebsiteReview[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [showFloatingButton, setShowFloatingButton] = useState(true);
 
   // Form state
   const [name, setName] = useState("");
@@ -116,11 +117,11 @@ export function CustomerReviewsSection() {
               }}
             >
               <MessageSquarePlus className="h-4 w-4" />
-              <span>Write a Review</span>
+              <span>Write a Customer Review</span>
             </Button>
           </div>
 
-          {/* Reviews Grid */}
+          {/* Floating-style Reviews Grid */}
           {loading ? (
             <p className="text-center py-10 text-xs text-muted-foreground">Loading reviews…</p>
           ) : reviews.length === 0 ? (
@@ -143,7 +144,7 @@ export function CustomerReviewsSection() {
               {reviews.map((rev) => (
                 <article
                   key={rev.id}
-                  className="rounded-3xl border border-border bg-card p-5 sm:p-6 shadow-soft transition-all hover:shadow-pop flex flex-col justify-between"
+                  className="rounded-3xl border border-border bg-card p-5 sm:p-6 shadow-lift hover:-translate-y-2 hover:shadow-pop transition-all duration-300 flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-3">
@@ -193,6 +194,41 @@ export function CustomerReviewsSection() {
           )}
         </div>
       </section>
+
+      {/* Floating Customer Reviews Action Widget */}
+      {showFloatingButton && (
+        <aside
+          aria-label="Floating customer review widget"
+          className="fixed bottom-20 left-3 sm:bottom-24 sm:left-6 z-40 animate-fade-in"
+        >
+          <div className="group relative flex items-center gap-2.5 rounded-full border border-border/80 bg-card/95 p-2 pr-4 shadow-lift backdrop-blur-md transition-all hover:scale-105 hover:shadow-pop hover:border-primary/50">
+            <button
+              onClick={() => setShowFloatingButton(false)}
+              className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground hover:bg-destructive hover:text-white transition-colors"
+              aria-label="Dismiss customer review widget"
+            >
+              <X className="h-2.5 w-2.5" />
+            </button>
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <MessageSquarePlus className="h-4 w-4" />
+            </div>
+            <button
+              onClick={() => {
+                setSubmitted(false);
+                setModalOpen(true);
+              }}
+              className="text-left cursor-pointer select-none"
+            >
+              <p className="text-xs font-extrabold text-foreground leading-tight">
+                Customer Reviews
+              </p>
+              <p className="text-[10px] font-bold text-primary">
+                Write a Review ★
+              </p>
+            </button>
+          </div>
+        </aside>
+      )}
 
       {/* Customer Review Submission Dialog */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
