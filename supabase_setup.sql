@@ -357,3 +357,36 @@ BEGIN
   WHERE email = admin_email
   ON CONFLICT (id) DO NOTHING;
 END $$;
+
+-- 13. Create website_reviews table for Customer Reviews
+CREATE TABLE IF NOT EXISTS public.website_reviews (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  rating integer NOT NULL CHECK (rating >= 1 AND rating <= 5),
+  section text NOT NULL DEFAULT 'costumes',
+  comment text NOT NULL,
+  location text,
+  status text NOT NULL DEFAULT 'pending',
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+GRANT SELECT, INSERT ON public.website_reviews TO anon, authenticated;
+GRANT ALL ON public.website_reviews TO service_role;
+ALTER TABLE public.website_reviews ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "public read approved reviews" ON public.website_reviews;
+CREATE POLICY "public read approved reviews" ON public.website_reviews
+  FOR SELECT TO anon, authenticated
+  USING (status = 'approved' OR public.has_role(auth.uid(), 'admin'));
+
+DROP POLICY IF EXISTS "public insert pending review" ON public.website_reviews;
+CREATE POLICY "public insert pending review" ON public.website_reviews
+  FOR INSERT TO anon, authenticated
+  WITH CHECK (status = 'pending');
+
+DROP POLICY IF EXISTS "admin all on reviews" ON public.website_reviews;
+CREATE POLICY "admin all on reviews" ON public.website_reviews
+  FOR ALL TO authenticated
+  USING (public.has_role(auth.uid(), 'admin'))
+  WITH CHECK (public.has_role(auth.uid(), 'admin'));
+

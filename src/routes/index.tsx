@@ -3,6 +3,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import hero from "@/assets/hero.jpg";
 import { Button } from "@/components/ui/button";
 import { OffersSection, Section, type ShopSection } from "@/components/site/Sections";
+import { GoogleReviewsSection } from "@/components/site/GoogleReviewsSection";
+import { CustomerReviewsSection } from "@/components/site/CustomerReviewsSection";
 import { catalogQuery, type Catalog } from "@/lib/queries";
 import { DEFAULT_ADDRESS, SHOP, WA_GREETING, directionsLink, imageUrl, waLink } from "@/lib/shop";
 
@@ -34,6 +36,8 @@ function Home() {
         intro={data.settings?.frame_instructions || "Personalised photo frames made for your favourite moments."}
         data={data} section="frames" />
       <Section id="gifts" title="Gifts" tint="bg-sage/50" viewAll intro="Thoughtful gifts for every occasion." data={data} section="gifts" />
+      <GoogleReviewsSection />
+      <CustomerReviewsSection />
       <About data={data} />
     </>
   );

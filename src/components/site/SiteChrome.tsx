@@ -29,6 +29,7 @@ export function SiteHeader() {
           <a href="/#costumes" className="hover:text-foreground">Fancy Costumes</a>
           <a href="/#frames" className="hover:text-foreground">Photo Frames</a>
           <a href="/#gifts" className="hover:text-foreground">Gifts</a>
+          <a href="/#google-reviews" className="hover:text-foreground">Reviews</a>
           <a href="/#contact" className="hover:text-foreground">Contact</a>
         </nav>
         <Link to="/cart" className="relative inline-flex h-9 sm:h-10 items-center gap-2 rounded-full border border-border bg-card px-3 sm:px-4 text-xs sm:text-sm font-bold shadow-soft hover:bg-muted" aria-label={`Cart, ${count} items`}>
@@ -42,6 +43,7 @@ export function SiteHeader() {
         <a href="/#costumes" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Fancy Costumes</a>
         <a href="/#frames" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Photo Frames</a>
         <a href="/#gifts" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Gifts</a>
+        <a href="/#google-reviews" className="rounded-full bg-card border border-border/70 px-3 py-1 font-bold whitespace-nowrap shadow-soft text-foreground hover:bg-muted">Reviews</a>
       </nav>
     </header>
   );

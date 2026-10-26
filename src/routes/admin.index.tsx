@@ -10,6 +10,7 @@ import { CategoriesAdmin } from "@/components/admin/CategoriesAdmin";
 import { OffersAdmin } from "@/components/admin/OffersAdmin";
 import { OrdersAdmin } from "@/components/admin/OrdersAdmin";
 import { SettingsAdmin } from "@/components/admin/SettingsAdmin";
+import { ReviewsAdmin } from "@/components/admin/ReviewsAdmin";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({
@@ -98,6 +99,12 @@ function Admin() {
             Orders
           </TabsTrigger>
           <TabsTrigger
+            value="reviews"
+            className="rounded-full px-5 py-2 text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-soft"
+          >
+            Reviews
+          </TabsTrigger>
+          <TabsTrigger
             value="settings"
             className="rounded-full px-5 py-2 text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-soft"
           >
@@ -116,6 +123,9 @@ function Admin() {
         </TabsContent>
         <TabsContent value="orders">
           <OrdersAdmin />
+        </TabsContent>
+        <TabsContent value="reviews">
+          <ReviewsAdmin />
         </TabsContent>
         <TabsContent value="settings">
           <SettingsAdmin />

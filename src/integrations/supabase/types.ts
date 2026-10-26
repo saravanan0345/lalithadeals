@@ -283,6 +283,39 @@ export type Database = {
         }
         Relationships: []
       }
+      website_reviews: {
+        Row: {
+          comment: string
+          created_at: string
+          id: string
+          location: string | null
+          name: string
+          rating: number
+          section: string
+          status: string
+        }
+        Insert: {
+          comment: string
+          created_at?: string
+          id?: string
+          location?: string | null
+          name: string
+          rating: number
+          section?: string
+          status?: string
+        }
+        Update: {
+          comment?: string
+          created_at?: string
+          id?: string
+          location?: string | null
+          name?: string
+          rating?: number
+          section?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
