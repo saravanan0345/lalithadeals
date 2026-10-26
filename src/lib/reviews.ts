@@ -139,6 +139,36 @@ export const SEED_WEBSITE_REVIEWS: WebsiteReview[] = [
     status: "approved",
     created_at: "2026-10-18T16:45:00Z",
   },
+  {
+    id: "w-rev-4",
+    name: "Gopinath M.",
+    rating: 5,
+    section: "costumes",
+    location: "Iyyappanthangal",
+    comment: "Got a Raja Raja Chozhan historical dress for school cultural event. Jewellery, sword, and crown were all neat and shining. Very humble and helpful owner.",
+    status: "approved",
+    created_at: "2026-10-15T11:20:00Z",
+  },
+  {
+    id: "w-rev-5",
+    name: "Soundarya S.",
+    rating: 5,
+    section: "frames",
+    location: "Kattupakkam",
+    comment: "Customized family collage frame turned out stunning! Clear acrylic glass and sturdy wood. Delivered within 2 days.",
+    status: "approved",
+    created_at: "2026-10-12T15:00:00Z",
+  },
+  {
+    id: "w-rev-6",
+    name: "Aravindhan B.",
+    rating: 5,
+    section: "gifts",
+    location: "Valasaravakkam",
+    comment: "The customized magic mug was a huge hit at my friend's birthday party! Very fast WhatsApp coordination and best price in this area.",
+    status: "approved",
+    created_at: "2026-10-08T18:30:00Z",
+  },
 ];
 
 function readLocalReviews(): WebsiteReview[] {
