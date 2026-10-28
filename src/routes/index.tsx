@@ -58,7 +58,7 @@ function Hero({ settings }: { settings: Catalog["settings"] }) {
             Rent beautiful fancy costumes for school events and competitions, order a custom photo frame, or pick a thoughtful gift — all in one place.
           </p>
           <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-3">
-            <Button asChild size="lg" variant="candy" className="w-full sm:w-auto font-bold"><a href="#offers">View Offers</a></Button>
+            <Button asChild size="lg" variant="candy" className="w-full sm:w-auto font-bold"><a href="#offers">View Deals</a></Button>
             <Button asChild size="lg" variant="soft" className="w-full sm:w-auto font-bold"><a href="#costumes">Explore Fancy Costumes</a></Button>
             <Button asChild size="lg" variant="whatsapp" className="w-full sm:w-auto font-bold"><a href={waLink(WA_GREETING)} target="_blank" rel="noreferrer">Chat on WhatsApp</a></Button>
           </div>
@@ -81,7 +81,14 @@ function About({ data }: { data: Catalog }) {
         <div className="rounded-3xl border border-border bg-ivory p-6 sm:p-8 shadow-soft">
           <h2 className="text-xl sm:text-2xl font-bold">Visit or message us</h2>
           <dl className="mt-4 space-y-3 text-xs sm:text-sm">
-            <div><dt className="font-semibold">Shop hours</dt><dd className="text-muted-foreground">{SHOP.hours.join(" and ")}</dd></div>
+            <div>
+              <dt className="font-semibold">Shop hours</dt>
+              <dd className="text-muted-foreground">
+                {SHOP.hours.map((h) => (
+                  <span key={h} className="block">{h}</span>
+                ))}
+              </dd>
+            </div>
             <div><dt className="font-semibold">WhatsApp</dt><dd className="text-muted-foreground">{SHOP.phoneDisplay}</dd></div>
             <div><dt className="font-semibold">Address</dt><dd className="whitespace-pre-line text-muted-foreground">{s?.address || DEFAULT_ADDRESS}</dd></div>
           </dl>

@@ -2,7 +2,7 @@ export const SHOP = {
   name: "Lalitha / L Deals",
   phoneDisplay: "+91 80720 44100",
   waNumber: "918072044100",
-  hours: ["11:00 AM – 1:00 PM", "5:00 PM – 9:30 PM"],
+  hours: ["11:00 AM – 1:00 PM (Appointment Only)", "5:00 PM – 9:30 PM"],
 };
 
 export const DEFAULT_ADDRESS = "3/237, Sri Kamatchi street, Padmavati Nagar, Iyyappanthangal near oil mill road";

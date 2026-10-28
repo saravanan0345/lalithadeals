@@ -1,6 +1,6 @@
-import type { ReactNode } from "react";
+import { type ReactNode, useRef, useState, useEffect, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ProductCard, ProductImage } from "@/components/site/ProductCard";
@@ -27,6 +27,81 @@ export function ProductGrid({ children }: { children: ReactNode[] }) {
   return (
     <div className="mx-auto grid max-w-6xl grid-cols-2 gap-3 sm:gap-5 px-3 sm:px-4 sm:grid-cols-3 lg:grid-cols-4">
       {children}
+    </div>
+  );
+}
+
+export function ProductScrollRail({ children }: { children: ReactNode[] }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 8);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
+  }, []);
+
+  useEffect(() => {
+    checkScroll();
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", checkScroll, { passive: true });
+    window.addEventListener("resize", checkScroll);
+    return () => {
+      el.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
+    };
+  }, [checkScroll, children]);
+
+  const scroll = (direction: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const distance = el.clientWidth * 0.85;
+    el.scrollBy({ left: direction === "left" ? -distance : distance, behavior: "smooth" });
+  };
+
+  return (
+    <div className="relative mx-auto max-w-6xl px-3 sm:px-4 group/rail">
+      {/* Left Chevron Button (Desktop / Tablet) */}
+      {canScrollLeft && (
+        <button
+          type="button"
+          onClick={() => scroll("left")}
+          className="absolute -left-1 sm:-left-3 top-1/2 -translate-y-1/2 z-20 hidden sm:flex h-11 w-11 items-center justify-center rounded-full border-2 border-border bg-card/95 text-foreground shadow-lift backdrop-blur-md transition-all hover:bg-primary hover:text-primary-foreground hover:border-primary hover:scale-110 active:scale-95"
+          aria-label="Scroll left"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+      )}
+
+      {/* Horizontal Scroll Track: Exactly 3 columns on tablet/desktop, 1.25 on mobile */}
+      <div
+        ref={scrollRef}
+        className="flex gap-3 sm:gap-4 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory py-2 -mx-1 px-1"
+      >
+        {children.map((child, idx) => (
+          <div
+            key={idx}
+            className="w-[76vw] max-w-[290px] sm:w-[calc((100%-1rem)/2)] md:w-[calc((100%-2rem)/3)] shrink-0 snap-start flex flex-col"
+          >
+            {child}
+          </div>
+        ))}
+      </div>
+
+      {/* Right Chevron Button (Desktop / Tablet) */}
+      {canScrollRight && (
+        <button
+          type="button"
+          onClick={() => scroll("right")}
+          className="absolute -right-1 sm:-right-3 top-1/2 -translate-y-1/2 z-20 hidden sm:flex h-11 w-11 items-center justify-center rounded-full border-2 border-border bg-card/95 text-foreground shadow-lift backdrop-blur-md transition-all hover:bg-primary hover:text-primary-foreground hover:border-primary hover:scale-110 active:scale-95"
+          aria-label="Scroll right"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
+      )}
     </div>
   );
 }
@@ -82,11 +157,26 @@ export function OfferCard({ o, data }: { o: Offer; data: Catalog }) {
   );
 }
 
-function ViewAllButton({ section }: { section: ShopSection }) {
+function ViewAllButton({
+  section,
+  title,
+}: {
+  section: ShopSection | "offers";
+  title: string;
+}) {
+  const to = section === "offers" ? "/offers" : `/shop/${section}`;
   return (
-    <div className="mx-auto mt-6 max-w-6xl px-3 sm:px-4">
-      <Button asChild variant="soft" className="rounded-full font-bold">
-        <Link to="/shop/$section" params={{ section }}>View All</Link>
+    <div className="mx-auto mt-6 sm:mt-8 max-w-6xl px-3 sm:px-4 flex justify-center sm:justify-start">
+      <Button
+        asChild
+        variant="soft"
+        size="lg"
+        className="rounded-full font-bold px-7 py-2.5 border-2 border-border/80 bg-card hover:bg-primary hover:text-primary-foreground hover:border-primary shadow-soft hover:shadow-pop transition-all inline-flex items-center gap-2 group text-sm sm:text-base cursor-pointer"
+      >
+        <Link to={to}>
+          <span>See More / View All {title}</span>
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        </Link>
       </Button>
     </div>
   );
@@ -112,29 +202,74 @@ export function Section({
   const cats = data.categories.filter((c) => c.section === section);
   const prods = data.products.filter((p) => p.section === section);
   const catName = (cid: string | null) => cats.find((c) => c.id === cid)?.name;
-  const groups =
-    section === "costumes"
-      ? [
-          ...cats.map((c) => ({
-            key: c.id,
-            name: c.name,
-            items: prods.filter((p) => p.category_id === c.id),
-          })),
-          {
-            key: "other",
-            name: "More costumes",
-            items: prods.filter((p) => !cats.some((c) => c.id === p.category_id)),
-          },
-        ].filter((g) => g.items.length)
-      : [{ key: "all", name: "", items: prods }];
+  const [selectedCat, setSelectedCat] = useState<string>("all");
+
+  const displayedProds =
+    viewAll && selectedCat !== "all"
+      ? prods.filter((p) => p.category_id === selectedCat)
+      : prods;
 
   return (
     <section id={id} className={`scroll-mt-24 py-10 sm:py-16 ${tint}`}>
       <SectionHead title={title} intro={intro} />
-      {prods.length === 0 ? (
+
+      {/* Category filter pills for sections with categories (e.g. Costumes) when viewAll is true */}
+      {viewAll && cats.length > 0 && prods.length > 0 && (
+        <div className="mx-auto mb-5 max-w-6xl px-3 sm:px-4">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+            <button
+              type="button"
+              onClick={() => setSelectedCat("all")}
+              className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                selectedCat === "all"
+                  ? "bg-primary text-primary-foreground shadow-soft"
+                  : "bg-card border border-border text-foreground hover:bg-muted"
+              }`}
+            >
+              All
+            </button>
+            {cats.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() => setSelectedCat(c.id)}
+                className={`rounded-full px-4 py-1.5 text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+                  selectedCat === c.id
+                    ? "bg-primary text-primary-foreground shadow-soft"
+                    : "bg-card border border-border text-foreground hover:bg-muted"
+                }`}
+              >
+                {c.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {displayedProds.length === 0 ? (
         <Empty text="Products will be added here soon." />
+      ) : viewAll ? (
+        <ProductScrollRail>
+          {displayedProds.map((p) => (
+            <ProductCard key={p.id} p={p} categoryName={catName(p.category_id)} />
+          ))}
+        </ProductScrollRail>
       ) : (
-        groups.map((g) => (
+        (section === "costumes"
+          ? [
+              ...cats.map((c) => ({
+                key: c.id,
+                name: c.name,
+                items: prods.filter((p) => p.category_id === c.id),
+              })),
+              {
+                key: "other",
+                name: "More costumes",
+                items: prods.filter((p) => !cats.some((c) => c.id === p.category_id)),
+              },
+            ].filter((g) => g.items.length)
+          : [{ key: "all", name: "", items: prods }]
+        ).map((g) => (
           <div key={g.key} className="mb-6 sm:mb-8">
             {g.name && (
               <h3 className="mx-auto mb-3 sm:mb-4 max-w-6xl px-3 sm:px-4 text-base sm:text-lg font-bold">
@@ -149,7 +284,8 @@ export function Section({
           </div>
         ))
       )}
-      {viewAll && <ViewAllButton section={section} />}
+
+      {viewAll && <ViewAllButton section={section} title={title} />}
     </section>
   );
 }
@@ -160,6 +296,12 @@ export function OffersSection({ data, viewAll = false }: { data: Catalog; viewAl
       <SectionHead title="Special Deals" intro="Combos, bundles and seasonal savings." />
       {data.offers.length === 0 ? (
         <Empty text="New offers are coming soon. Message us on WhatsApp for current deals." />
+      ) : viewAll ? (
+        <ProductScrollRail>
+          {data.offers.map((o) => (
+            <OfferCard key={o.id} o={o} data={data} />
+          ))}
+        </ProductScrollRail>
       ) : (
         <ProductGrid>
           {data.offers.map((o) => (
@@ -167,13 +309,7 @@ export function OffersSection({ data, viewAll = false }: { data: Catalog; viewAl
           ))}
         </ProductGrid>
       )}
-      {viewAll && (
-        <div className="mx-auto mt-6 max-w-6xl px-3 sm:px-4">
-          <Button asChild variant="soft" className="rounded-full font-bold">
-            <Link to="/offers">View All</Link>
-          </Button>
-        </div>
-      )}
+      {viewAll && <ViewAllButton section="offers" title="Special Deals" />}
     </section>
   );
 }
