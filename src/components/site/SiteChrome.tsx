@@ -82,7 +82,6 @@ export function SiteFooter() {
           <h3 className="font-semibold">Contact</h3>
           <a className="mt-3 block text-muted-foreground hover:text-foreground" href={waLink(WA_GREETING)} target="_blank" rel="noreferrer">WhatsApp {SHOP.phoneDisplay}</a>
           <a className="mt-3 block whitespace-pre-line text-muted-foreground hover:text-foreground" href={maps} target="_blank" rel="noreferrer">{address}</a>
-          <Link to="/admin" className="mt-6 block text-xs text-muted-foreground/70 hover:text-foreground">Admin</Link>
         </div>
       </div>
       <p className="pb-8 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} Lalitha / L Deals</p>
