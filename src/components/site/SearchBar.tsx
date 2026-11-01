@@ -190,7 +190,7 @@ export function SearchBar({ className = "" }: { className?: string }) {
                     {/* Price */}
                     <div className="text-right shrink-0">
                       <span className="text-xs sm:text-sm font-black text-foreground">
-                        {inr(p.price)}
+                        {Number(p.price) > 0 ? inr(p.price) : "On Request"}
                       </span>
                     </div>
                   </Link>

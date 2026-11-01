@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { ImageOff, ShoppingBag } from "lucide-react";
+import { ImageOff, ShoppingBag, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
 import { discountPercent } from "@/lib/pricing";
-import { imageUrl, inr } from "@/lib/shop";
+import { imageUrl, inr, waLink } from "@/lib/shop";
 import type { Product } from "@/lib/queries";
 
 export function ProductImage({
@@ -40,11 +40,22 @@ export function ProductImage({
 export function PriceBlock({ p }: { p: Pick<Product, "price" | "mrp" | "section"> }) {
   const price = Number(p.price);
   const mrp = p.mrp == null ? null : Number(p.mrp);
+  const isCostume = p.section === "costumes";
+
+  if (isCostume && (!price || price <= 0)) {
+    return (
+      <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
+        <span className="text-xs sm:text-sm font-extrabold text-primary">Price on Request</span>
+        <span className="text-[10px] sm:text-xs font-bold text-muted-foreground">(Rental)</span>
+      </div>
+    );
+  }
+
   const pct = discountPercent(mrp, price);
   return (
     <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
       <span className="text-base sm:text-lg font-black text-primary">{inr(price)}</span>
-      {p.section === "costumes" && (
+      {isCostume && (
         <span className="text-[10px] sm:text-xs font-bold text-muted-foreground">rental</span>
       )}
       {pct != null && mrp != null && (
@@ -120,20 +131,38 @@ export function ProductCard({
 
         {/* Action Buttons: Responsive full width on phones, side-by-side on tablet/desktop */}
         <div className="mt-auto flex w-full flex-col gap-1.5 pt-2.5 sm:flex-row sm:gap-2 sm:pt-3">
-          <Button
-            size="sm"
-            variant="candy"
-            className="flex h-8 w-full min-w-0 items-center justify-center gap-1.5 rounded-full px-2 text-xs font-bold shadow-soft active:scale-95 sm:flex-1"
-            disabled={!available}
-            onClick={() => {
-              add(p.id);
-              toast.success(`${p.name} added to cart`);
-            }}
-            aria-label={`Add ${p.name} to cart`}
-          >
-            <ShoppingBag className="h-3.5 w-3.5 shrink-0" />
-            <span className="truncate">Add to Cart</span>
-          </Button>
+          {p.section === "costumes" && (!p.price || Number(p.price) <= 0) ? (
+            <Button
+              asChild
+              size="sm"
+              variant="whatsapp"
+              className="flex h-8 w-full min-w-0 items-center justify-center gap-1.5 rounded-full px-2 text-xs font-bold shadow-soft active:scale-95 sm:flex-1"
+            >
+              <a
+                href={waLink(`Hi Lalitha / L Deals! I'm interested in renting "${p.name}". Please let me know the rental price and availability.`)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <MessageCircle className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">Ask Price</span>
+              </a>
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              variant="candy"
+              className="flex h-8 w-full min-w-0 items-center justify-center gap-1.5 rounded-full px-2 text-xs font-bold shadow-soft active:scale-95 sm:flex-1"
+              disabled={!available}
+              onClick={() => {
+                add(p.id);
+                toast.success(`${p.name} added to cart`);
+              }}
+              aria-label={`Add ${p.name} to cart`}
+            >
+              <ShoppingBag className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">Add to Cart</span>
+            </Button>
+          )}
 
           <Button
             asChild

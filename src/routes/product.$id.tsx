@@ -43,7 +43,9 @@ function ProductPage() {
   const [qty, setQty] = useState(1);
   const available = p.is_available && (p.stock == null || p.stock > 0);
   const terms = p.section === "costumes" ? p.rental_terms || data.settings?.rental_terms : null;
-  const askText = `Hi Lalitha / L Deals! I'm interested in "${p.name}" — ${inr(Number(p.price))}${p.section === "costumes" ? " (rental)" : ""}. Please share more details.`;
+  const priceNum = Number(p.price);
+  const priceDisplay = priceNum > 0 ? ` — ${inr(priceNum)}${p.section === "costumes" ? " (rental)" : ""}` : "";
+  const askText = `Hi Lalitha / L Deals! I'm interested in "${p.name}"${priceDisplay}. Please share more details and price.`;
   return (
     <div className="mx-auto grid max-w-5xl gap-10 px-4 py-12 md:grid-cols-2">
       <ProductImage path={p.image_path} alt={p.name} />
@@ -61,13 +63,17 @@ function ProductPage() {
           {p.customization && <div><dt className="font-medium">Customisation</dt><dd className="whitespace-pre-line text-muted-foreground">{p.customization}</dd></div>}
         </dl>
         <div className="mt-8 flex flex-wrap items-center gap-2.5 sm:gap-3">
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-semibold" htmlFor="qty">Qty</label>
-            <input id="qty" type="number" min={1} max={MAX_QTY} value={qty} onChange={(e) => setQty(Math.max(1, Math.min(MAX_QTY, Number(e.target.value) || 1)))}
-              className="h-10 w-16 rounded-full border border-input bg-card px-3 text-center font-bold" />
-          </div>
-          <Button size="lg" variant="candy" className="flex-1 min-w-[130px] rounded-full font-bold" disabled={!available} onClick={() => { add(p.id, qty); toast.success("Added to cart"); }}>Add to Cart</Button>
-          <Button asChild size="lg" variant="whatsapp" className="w-full sm:w-auto rounded-full font-bold"><a href={waLink(askText)} target="_blank" rel="noreferrer">Ask on WhatsApp</a></Button>
+          {priceNum > 0 ? (
+            <>
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-semibold" htmlFor="qty">Qty</label>
+                <input id="qty" type="number" min={1} max={MAX_QTY} value={qty} onChange={(e) => setQty(Math.max(1, Math.min(MAX_QTY, Number(e.target.value) || 1)))}
+                  className="h-10 w-16 rounded-full border border-input bg-card px-3 text-center font-bold" />
+              </div>
+              <Button size="lg" variant="candy" className="flex-1 min-w-[130px] rounded-full font-bold" disabled={!available} onClick={() => { add(p.id, qty); toast.success("Added to cart"); }}>Add to Cart</Button>
+            </>
+          ) : null}
+          <Button asChild size="lg" variant="whatsapp" className={`rounded-full font-bold ${priceNum <= 0 ? "w-full sm:w-auto px-8" : "w-full sm:w-auto"}`}><a href={waLink(askText)} target="_blank" rel="noreferrer">{priceNum <= 0 ? "Ask Price on WhatsApp" : "Ask on WhatsApp"}</a></Button>
         </div>
       </div>
     </div>

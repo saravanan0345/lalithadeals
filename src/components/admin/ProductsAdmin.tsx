@@ -99,8 +99,8 @@ export function ProductsAdmin() {
       description: p.description ?? "",
       image_path: p.image_path,
       mrp: p.mrp?.toString() ?? "",
-      price: p.price.toString(),
-      rental_price: p.section === "costumes" ? p.price.toString() : "",
+      price: Number(p.price) > 0 ? p.price.toString() : "",
+      rental_price: p.section === "costumes" && Number(p.price) > 0 ? p.price.toString() : "",
       is_rental: p.section === "costumes",
       age_info: p.age_info ?? "",
       size_info: p.size_info ?? "",
@@ -134,19 +134,28 @@ export function ProductsAdmin() {
       return;
     }
 
+    const isCostume = editingProduct.section === "costumes";
     const offerPrice = num(editingProduct.price);
     const mrp = num(editingProduct.mrp);
     const stock = num(editingProduct.stock);
 
-    if (offerPrice == null || isNaN(offerPrice) || offerPrice < 0) {
-      toast.error("Please enter a valid price / offer price");
-      return;
+    if (!isCostume) {
+      if (offerPrice == null || isNaN(offerPrice) || offerPrice <= 0) {
+        toast.error("Price is required for Photo Frames and Gifts");
+        return;
+      }
+    } else {
+      if (offerPrice != null && (isNaN(offerPrice) || offerPrice < 0)) {
+        toast.error("Please enter a valid price or leave it empty");
+        return;
+      }
     }
+
     if (mrp != null && (isNaN(mrp) || mrp <= 0)) {
       toast.error("MRP must be greater than zero");
       return;
     }
-    if (mrp != null && offerPrice > mrp) {
+    if (mrp != null && offerPrice != null && offerPrice > mrp) {
       toast.error("Offer price cannot be higher than MRP");
       return;
     }
@@ -161,7 +170,7 @@ export function ProductsAdmin() {
         name,
         description: editingProduct.description.trim() || null,
         image_path: editingProduct.image_path,
-        price: offerPrice,
+        price: offerPrice != null ? offerPrice : 0,
         mrp,
         age_info: editingProduct.age_info.trim() || null,
         size_info: editingProduct.size_info.trim() || null,
@@ -331,11 +340,22 @@ export function ProductsAdmin() {
             />
           </div>
 
-          {/* Offer Price */}
+          {/* Offer Price / Rental Price */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <Label className="text-sm font-semibold">
-                {editingProduct.is_rental ? "Rental price / Offer price (₹) *" : "Offer price (₹) *"}
+                {editingProduct.section === "costumes" ? (
+                  <>
+                    Rental price (₹){" "}
+                    <span className="text-xs font-normal text-muted-foreground">
+                      (Optional for Costumes)
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Price / Offer price (₹) <span className="text-destructive font-bold">*</span>
+                  </>
+                )}
               </Label>
               {pct != null && (
                 <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-800">
@@ -347,7 +367,7 @@ export function ProductsAdmin() {
               inputMode="decimal"
               value={editingProduct.price}
               onChange={(e) => setEditingProduct({ ...editingProduct, price: e.target.value })}
-              placeholder="e.g. 499"
+              placeholder={editingProduct.section === "costumes" ? "Optional (leave empty for Price on Request)" : "e.g. 499"}
               className="rounded-xl"
             />
           </div>
@@ -500,8 +520,14 @@ export function ProductsAdmin() {
                   {/* Price */}
                   <td className="p-4">
                     <div className="flex flex-col">
-                      <span className="font-bold text-foreground">{inr(Number(p.price))}</span>
-                      {p.mrp && Number(p.mrp) > Number(p.price) && (
+                      <span className="font-bold text-foreground">
+                        {Number(p.price) > 0 ? (
+                          inr(Number(p.price))
+                        ) : (
+                          <span className="text-xs italic text-muted-foreground">Price on request</span>
+                        )}
+                      </span>
+                      {p.mrp && Number(p.mrp) > Number(p.price) && Number(p.price) > 0 && (
                         <span className="text-xs text-muted-foreground line-through">
                           MRP {inr(Number(p.mrp))}
                         </span>
